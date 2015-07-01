@@ -8,7 +8,17 @@
  *
  * Main module of the application.
  */
-angular.module('stockDogApp', [ 'ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'mgcrea.ngStrap' ]).config(function ($routeProvider) {
+angular
+  .module('stockDogApp', [
+    'ngAnimate',
+    'ngCookies',
+    'ngResource',
+    'ngRoute',
+    'ngSanitize',
+    'ngTouch',
+    'mgcrea.ngStrap'
+  ])
+  .config(function ($routeProvider) {
     $routeProvider
       .when('/dashboard', {
         templateUrl: 'views/dashboard.html',

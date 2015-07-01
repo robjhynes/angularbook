@@ -1,45 +1,47 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name stockDogApp.directive:stkWatchlistPanel
- * @description
- * # stkWatchlistPanel
- */
 angular.module('stockDogApp')
-  .directive('stkWatchlistPanel', function ($location, $modal, WatchlistService, $routeParams) {
+  // Register directive and inject dependencies
+  .directive('stkWatchlistPanel',
+    function ($location, $modal, $routeParams, WatchlistService) {
     return {
       templateUrl: 'views/templates/watchlist-panel.html',
       restrict: 'E',
-      link: function postLink($scope) {
+      scope: {},
+      link: function ($scope) {
+        // Initialize variables
         $scope.watchlist = {};
+        $scope.currentList = $routeParams.listId;
         var addListModal = $modal({
           scope: $scope,
           template: 'views/templates/addlist-modal.html',
           show: false
         });
-        
+
+        // Bind model from service to this scope
         $scope.watchlists = WatchlistService.query();
 
-        $scope.currentList = $routeParams.listId;
-
-        $scope.gotoList = function (listId) {
-          $location.path('watchlist/', + listId); 
-        };
-
-        $scope.showModal = function() {
+        // Display addlist modal
+        $scope.showModal = function () {
           addListModal.$promise.then(addListModal.show);
         };
 
-        $scope.createList = function() {
+        // Create a new list from fields in modal
+        $scope.createList = function () {
           WatchlistService.save($scope.watchlist);
           addListModal.hide();
           $scope.watchlist = {};
         };
 
-        $scope.deleteList = function(list) {
-         WatchlistService.remove(list);
-         $location.path('/');
+        // Delete desired list and redirect to home
+        $scope.deleteList = function (list) {
+          WatchlistService.remove(list);
+          $location.path('/');
+        };
+
+        // Send users to desired watchlist view
+        $scope.gotoList = function (listId) {
+          $location.path('watchlist/' + listId);
         };
       }
     };
